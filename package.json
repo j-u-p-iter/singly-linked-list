@@ -1,0 +1,24 @@
+{
+  "name": "@j.u.p.iter/singly-linked-list",
+  "version": "0.0.0-semantically-released",
+  "description": "Some project description",
+  "keywords": [
+    "some keywords"
+  ],
+  "main": "dist/lib/singly-linked-list.cjs.js",
+  "module": "dist/lib/singly-linked-list.esm.js",
+  "typings": "dist/types",
+  "author": "j.u.p.iter <pn79122821224@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "commit": "jupiter-scripts precommit --allowJs",
+    "build": "jupiter-scripts build --bundle",
+    "start": "yarn run build --watch",
+    "lint": "jupiter-scripts lint --format codeFrame",
+    "lint:fix": "yarn run lint --fix",
+    "test": "jupiter-scripts test"
+  },
+  "devDependencies": {
+    "@j.u.p.iter/jupiter-scripts": "^1.14.1"
+  }
+}

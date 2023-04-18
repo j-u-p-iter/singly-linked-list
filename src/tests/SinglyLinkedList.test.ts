@@ -58,7 +58,7 @@ describe('SinglyLinkedList', () => {
         new SinglyLinkedListNode('15'),
       ];
 
-      singlyLinkedList.push(nodes[0]).push(nodes[1]).push(nodes[2]);
+      nodes.forEach((node) => singlyLinkedList.push(node));
 
       const callback = jest.fn(() => {});
       singlyLinkedList.forEach(callback)
@@ -74,5 +74,129 @@ describe('SinglyLinkedList', () => {
       expect((callback.mock.calls[2] as any)[0]).toEqual(nodes[2])
       expect((callback.mock.calls[2] as any)[1]).toEqual(2)
     });
+  });
+
+  describe('pop', () => {
+    it('removes last node from the list', () => {
+      const singlyLinkedList = new SinglyLinkedList();
+
+      const nodes = [
+        new SinglyLinkedListNode('10'),
+        new SinglyLinkedListNode('12'),
+        new SinglyLinkedListNode('15'),
+      ];
+
+      nodes.forEach((node) => singlyLinkedList.push(node));
+
+      expect(singlyLinkedList.getLength()).toBe(3);
+      expect(singlyLinkedList.getTail()).toEqual(nodes[2]);
+
+      singlyLinkedList.pop();
+      
+      expect(singlyLinkedList.getLength()).toBe(2);
+      expect(singlyLinkedList.getTail()).toEqual(nodes[1]);
+    });
+
+    it('returns removed node', () => {
+      const singlyLinkedList = new SinglyLinkedList();
+
+      const nodes = [
+        new SinglyLinkedListNode('10'),
+        new SinglyLinkedListNode('12'),
+        new SinglyLinkedListNode('15'),
+      ];
+
+      nodes.forEach((node) => singlyLinkedList.push(node));
+
+      const removedNode = singlyLinkedList.pop();
+      
+      expect(removedNode).toEqual(nodes[2]);
+    });
+
+    describe('when there is one item in the list', () => {
+      it('clears the list', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        singlyLinkedList.push(new SinglyLinkedListNode('10'));
+
+        const removedNode = singlyLinkedList.pop();
+        
+        expect(removedNode).toEqual(new SinglyLinkedListNode('10'));
+        expect(singlyLinkedList.getHead()).toBe(null);
+        expect(singlyLinkedList.getTail()).toBe(null);
+        expect(singlyLinkedList.getLength()).toBe(0);
+      });
+    });
+
+    describe('when the list is empty', () => {
+      it('returns undefined', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        expect(singlyLinkedList.pop()).not.toBeDefined();
+        expect(singlyLinkedList.getLength()).toBe(0);
+      });
+    })
+  });
+
+  describe('shift', () => {
+    it('removes first node from the list', () => {
+      const singlyLinkedList = new SinglyLinkedList();
+
+      const nodes = [
+        new SinglyLinkedListNode('10'),
+        new SinglyLinkedListNode('12'),
+        new SinglyLinkedListNode('15'),
+      ];
+
+      nodes.forEach((node) => singlyLinkedList.push(node));
+
+      expect(singlyLinkedList.getLength()).toBe(3);
+      expect(singlyLinkedList.getTail()).toEqual(nodes[2]);
+
+      singlyLinkedList.shift();
+      
+      expect(singlyLinkedList.getLength()).toBe(2);
+      expect(singlyLinkedList.getHead()).toEqual(nodes[1]);
+    });
+
+    it('returns the removed node', () => {
+      const singlyLinkedList = new SinglyLinkedList();
+
+      const nodes = [
+        new SinglyLinkedListNode('10'),
+        new SinglyLinkedListNode('12'),
+        new SinglyLinkedListNode('15'),
+      ];
+
+      nodes.forEach((node) => singlyLinkedList.push(node));
+
+      const removedNode = singlyLinkedList.shift();
+
+      expect(removedNode).toEqual(nodes[0]);
+    });
+
+    describe('when there is one item in the list', () => {
+      it('clears the list', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        singlyLinkedList.push(new SinglyLinkedListNode('10'));
+
+        const removedNode = singlyLinkedList.shift();
+        
+        expect(removedNode).toEqual(new SinglyLinkedListNode('10'));
+        expect(singlyLinkedList.getHead()).toBe(null);
+        expect(singlyLinkedList.getTail()).toBe(null);
+        expect(singlyLinkedList.getLength()).toBe(0);
+      });
+    });
+
+    describe('when the list is empty', () => {
+      it('returns undefined', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        expect(singlyLinkedList.shift()).not.toBeDefined();
+        expect(singlyLinkedList.getLength()).toBe(0);
+      });
+    })
   });
 });

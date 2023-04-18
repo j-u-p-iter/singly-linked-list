@@ -25,6 +25,7 @@ export class SinglyLinkedList {
      * When there is only one node,
      *   the head and the tail refer 
      *   to the same node.
+     *   The next property for both nodes is null.
      */
     if (this.isEmpty()) {
       this.head = this.tail = newNode;
@@ -52,7 +53,7 @@ export class SinglyLinkedList {
    *   till the very end.
    *
    */
-  public forEach(callback) {
+  public forEach(callback: (current: SinglyLinkedListNode | null, index: number) => void) {
     if (typeof callback !== 'function') {
       throw new Error('.forEach(callback) method expects callback.')
     }
@@ -62,9 +63,75 @@ export class SinglyLinkedList {
 
     while (current instanceof SinglyLinkedListNode) {
       callback(current, index);
-      index++;
+
       current = current.getNext();
+      index++;
     }
+  }
+
+  /**
+   * Removes the last node 
+   *   from the list.
+   *
+   */
+  public pop() {
+    if (this.isEmpty()) { return; }
+
+    if (this.length === 1) {
+      const removedNode = this.head;
+
+      this.clear();
+
+      return removedNode;
+    }
+
+    let removedNode;
+
+    this.forEach((current, index) => {
+      if (index === this.length - 2) { 
+        removedNode = current.getNext();
+
+        current.setNext(null);
+        this.tail = current;
+      }
+    });
+
+    this.length--;
+
+    return removedNode;
+  }
+
+  /**
+   * Removes first element 
+   *   from the list.
+   *
+   */
+  public shift() {
+    const currentHead = this.head;
+
+    if (this.isEmpty()) {
+      return;
+    }
+
+    if (this.length === 1) {
+      this.clear();
+    } else {
+      this.head = this.head.getNext();
+
+      this.length--;
+    }
+
+    return currentHead;
+  } 
+
+  /**
+   * Clears the list.
+   *
+   */
+  public clear() {
+    this.head = null;
+    this.tail = null;
+    this.length = 0;
   }
 
   public isEmpty() {

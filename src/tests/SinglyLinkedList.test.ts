@@ -12,7 +12,7 @@ describe('SinglyLinkedList', () => {
   });
 
   describe('push', () => {
-    describe('when there is one item', () => {
+    describe('when the list is empty', () => {
       it('head and tail points to the same node', () => {
         const singlyLinkedList = new SinglyLinkedList();
 
@@ -29,7 +29,7 @@ describe('SinglyLinkedList', () => {
       });
     });
 
-    describe('when there is more than one item', () => {
+    describe('when there is more than one node', () => {
       it('replace the tail with the newly added node', () => {
         const singlyLinkedList = new SinglyLinkedList();
 
@@ -113,7 +113,7 @@ describe('SinglyLinkedList', () => {
       expect(removedNode).toEqual(nodes[2]);
     });
 
-    describe('when there is one item in the list', () => {
+    describe('when there is one node in the list', () => {
       it('clears the list', () => {
         const singlyLinkedList = new SinglyLinkedList();
 
@@ -175,7 +175,7 @@ describe('SinglyLinkedList', () => {
       expect(removedNode).toEqual(nodes[0]);
     });
 
-    describe('when there is one item in the list', () => {
+    describe('when there is one node in the list', () => {
       it('clears the list', () => {
         const singlyLinkedList = new SinglyLinkedList();
 
@@ -198,5 +198,42 @@ describe('SinglyLinkedList', () => {
         expect(singlyLinkedList.getLength()).toBe(0);
       });
     })
+  });
+
+  describe('unshift', () => {
+    describe('when the list is empty', () => {
+      it('head and tail points to the same node', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        singlyLinkedList.unshift('10');
+
+        const head = singlyLinkedList.getHead();
+        const tail = singlyLinkedList.getTail();
+
+        expect(head).toEqual(new SinglyLinkedListNode('10'));
+        expect(tail).toEqual(new SinglyLinkedListNode('10'));
+        expect(head.getNext()).toEqual(null);
+        expect(tail.getNext()).toBe(null);
+        expect(singlyLinkedList.getLength()).toEqual(1);
+      });
+    });
+
+    describe('when there is more than one node', () => {
+      it('replace the head with the newly added node shifting the current head to the right', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        singlyLinkedList.unshift('12');
+        singlyLinkedList.unshift(new SinglyLinkedListNode('25'));
+
+        const head = singlyLinkedList.getHead();
+        const tail = singlyLinkedList.getTail();
+
+        expect(head).toEqual(new SinglyLinkedListNode('25', tail));
+        expect(tail).toEqual(new SinglyLinkedListNode('12'));
+        expect(head.getNext()).toEqual(tail);
+        expect(tail.getNext()).toBe(null);
+        expect(singlyLinkedList.getLength()).toEqual(2);
+      });
+    });
   });
 });

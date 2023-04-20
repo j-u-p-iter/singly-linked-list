@@ -5,13 +5,7 @@ export class SinglyLinkedList {
   private head = null;
   private tail = null;
 
-  constructor() {}
-
-  /**
-   * Add node to the end of the list
-   *
-   */
-  public push(value) {
+  private valueToNode(value: any) {
     let newNode;
 
     if (value instanceof SinglyLinkedListNode) {
@@ -20,6 +14,17 @@ export class SinglyLinkedList {
       newNode = new SinglyLinkedListNode(value);
     }
 
+    return newNode;
+  }
+
+  constructor() {}
+
+  /**
+   * Add node to the end of the list
+   *
+   */
+  public push(value: any) {
+    const newNode = this.valueToNode(value);
 
     /**
      * When there is only one node,
@@ -102,7 +107,7 @@ export class SinglyLinkedList {
   }
 
   /**
-   * Removes first element 
+   * Removes first node 
    *   from the list.
    *
    */
@@ -123,6 +128,27 @@ export class SinglyLinkedList {
 
     return currentHead;
   } 
+
+  /**
+   * Adds new node to the 
+   *   beginning of the list.
+   *
+   */
+  public unshift(value) {
+    if (this.isEmpty()) {
+      return this.push(value);
+    }
+
+    const newNode = this.valueToNode(value);
+
+    newNode.setNext(this.head);
+
+    this.head = newNode;
+
+    this.length++;
+
+    return newNode;
+  };
 
   /**
    * Clears the list.

@@ -253,6 +253,34 @@ export class SinglyLinkedList {
   }
 
   /**
+   * Removes node from the list at the
+   *   provided position
+   *
+   */
+  public removeAt(nodeIndex: number): boolean {
+    if (this.isIndexInvalid(nodeIndex)) {
+      return false;
+    }
+
+    if (nodeIndex === 0) {
+      return Boolean(this.shift());
+    }
+
+    if (nodeIndex === this.length - 1) {
+      return Boolean(this.pop());
+    }
+
+    const parentNode = this.findAt(nodeIndex - 1);
+    const nextNode = parentNode.getNext().getNext(); 
+
+    parentNode.setNext(nextNode);
+
+    this.length--;
+
+    return true;
+  }
+
+  /**
    * Sets the new value for the node 
    *   at some index.
    *

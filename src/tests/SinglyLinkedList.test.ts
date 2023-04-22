@@ -483,7 +483,7 @@ describe('SinglyLinkedList', () => {
     });
 
     describe('if the index equals to the length of the list', () => {
-      it('inserts node in the beginning of the list', () => {
+      it('inserts node at the end of the list', () => {
         const singlyLinkedList = new SinglyLinkedList();
 
         const nodes = [
@@ -520,6 +520,99 @@ describe('SinglyLinkedList', () => {
         expect(singlyLinkedList.findAt(0).getValue()).toEqual('10');
         expect(singlyLinkedList.findAt(1).getValue()).toEqual('5');
         expect(singlyLinkedList.findAt(2).getValue()).toEqual('12');
+        expect(result).toBe(true);
+      });
+    });
+  });
+
+  describe('removeAt method', () => {
+    describe('if the index is negative', () => {
+      it('returns false', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        const result = singlyLinkedList.removeAt(-5);
+
+        expect(result).toBe(false);
+        expect(singlyLinkedList.getLength()).toBe(0);
+      });
+    });
+
+    describe('if the index is higher than the length of the list', () => {
+      it('returns false', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        const nodes = [
+          new SinglyLinkedListNode('10'),
+          new SinglyLinkedListNode('12'),
+          new SinglyLinkedListNode('15'),
+        ];
+
+        nodes.forEach((node) => singlyLinkedList.push(node));
+
+        const result = singlyLinkedList.removeAt(20);
+
+        expect(result).toBe(false);
+        expect(singlyLinkedList.getLength()).toBe(3);
+      });
+    });
+
+    describe('if the index equals to 0', () => {
+      it('removes node from the beginning of the list', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        const nodes = [
+          new SinglyLinkedListNode('10'),
+          new SinglyLinkedListNode('12'),
+          new SinglyLinkedListNode('15'),
+        ];
+
+        nodes.forEach((node) => singlyLinkedList.push(node));
+
+        const result = singlyLinkedList.removeAt(0);
+
+        expect(singlyLinkedList.getLength()).toBe(2);
+        expect(singlyLinkedList.getHead().getValue()).toEqual('12');
+        expect(result).toBe(true);
+      });
+    });
+
+    describe('if the index equals to the length of the list - 1', () => {
+      it('removes the last node of the list', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        const nodes = [
+          new SinglyLinkedListNode('10'),
+          new SinglyLinkedListNode('12'),
+          new SinglyLinkedListNode('15'),
+        ];
+
+        nodes.forEach((node) => singlyLinkedList.push(node));
+
+        const result = singlyLinkedList.removeAt(2);
+
+        expect(singlyLinkedList.getLength()).toBe(2);
+        expect(singlyLinkedList.getTail().getValue()).toEqual('12');
+        expect(result).toBe(true);
+      });
+    });
+
+    describe('if the index is valid', () => {
+      it('removes node with correct index', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        const nodes = [
+          new SinglyLinkedListNode('10'),
+          new SinglyLinkedListNode('12'),
+          new SinglyLinkedListNode('15'),
+        ];
+
+        nodes.forEach((node) => singlyLinkedList.push(node));
+
+        const result = singlyLinkedList.removeAt(1);
+
+        expect(singlyLinkedList.getLength()).toBe(2);
+        expect(singlyLinkedList.findAt(0).getValue()).toEqual('10');
+        expect(singlyLinkedList.findAt(1).getValue()).toEqual('15');
         expect(result).toBe(true);
       });
     });

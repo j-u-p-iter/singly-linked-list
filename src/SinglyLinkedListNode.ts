@@ -35,7 +35,34 @@ export class SinglyLinkedListNode {
     return this;
   }
 
+  /**
+   * Checks if there is 
+   *   a next node.
+   *
+   */
   public hasNext() {
     return this.next instanceof SinglyLinkedListNode;
+  }
+
+  /**
+   * Clones the node
+   * 
+   * It's very important to clone the object, using this way,
+   *   since otherwise you won't be able to check if 
+   *   the object is the instance of the SinglyLinkedListNode class like
+   *   "node instanceof SinglyLinkedListNode"
+   */
+  public clone() {
+    const props = { ...this };
+
+    const clone = Reflect.construct(this.constructor, []);
+
+    Object.keys(props).forEach((prop) => {
+      clone[prop] = props[prop];
+    });
+
+    clone.setNext(null);
+
+    return clone;
   }
 };

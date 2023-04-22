@@ -30,7 +30,7 @@ export class SinglyLinkedList {
   constructor() {}
 
   /**
-   * Add node to the end of 
+   * Add node at the end of 
    *   the list.
    *
    */
@@ -180,9 +180,7 @@ export class SinglyLinkedList {
    *   condition, provided in the callback.
    *
    */
-  public find(callback: Callback<boolean>, startingNode: SinglyLinkedListNode = this.head) {
-    if (this.isEmpty()) { return null; }
-
+  public find(callback: Callback<boolean>, startingNode: SinglyLinkedListNode = this.head): SinglyLinkedListNode | null {
     if (typeof callback !== 'function') {
       throw new Error('.find(callback) method expects a callback.')
     }
@@ -204,6 +202,54 @@ export class SinglyLinkedList {
     }
 
     return null;
+  }
+
+  public filter(callback: Callback<boolean>): SinglyLinkedList {
+    if (typeof callback !== 'function') {
+      throw new Error('.filter(callback) method expects a callback.')
+    }
+
+    const resultList = new SinglyLinkedList();
+
+    this.forEach((node, index) => {
+      if (callback(node, index)) {
+        resultList.push(node.clone());
+      }
+    });
+
+    return resultList;
+  }
+
+  /**
+   * Inserts new node in the list according to 
+   *   the provided index.
+   *
+   */
+  public insertAt(nodeIndex: number, value: any) {
+    if (nodeIndex < 0 || nodeIndex > this.length) {
+      return false;
+    }
+
+    const newNode = this.valueToNode(value); 
+
+    if (nodeIndex === 0) {
+      return Boolean(this.unshift(newNode));
+    }
+
+    if (nodeIndex === this.length) {
+      return Boolean(this.push(newNode));
+    }
+
+    const parentNode = this.findAt(nodeIndex - 1);
+
+    const currentNodeAtIndex = parentNode.getNext();
+
+    parentNode.setNext(newNode);
+    newNode.setNext(currentNodeAtIndex);
+
+    this.length++;
+
+    return true;
   }
 
   /**

@@ -11,7 +11,7 @@ describe('SinglyLinkedList', () => {
     expect(singlyLinkedList.isEmpty()).toBe(true);
   });
 
-  describe('push', () => {
+  describe('push method', () => {
     describe('when the list is empty', () => {
       it('head and tail points to the same node', () => {
         const singlyLinkedList = new SinglyLinkedList();
@@ -46,9 +46,19 @@ describe('SinglyLinkedList', () => {
         expect(singlyLinkedList.getLength()).toEqual(2);
       });
     });
+
+    describe('returns new linked list', () => {
+      it('replace the tail with the newly added node', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        const result = singlyLinkedList.push('12');
+
+        expect(result).toEqual(singlyLinkedList);
+      });
+    });
   });
 
-  describe('forEach', () => {
+  describe('forEach method', () => {
     it('traverses list from the very beginning till the very end', () => {
       const singlyLinkedList = new SinglyLinkedList();
 
@@ -76,7 +86,7 @@ describe('SinglyLinkedList', () => {
     });
   });
 
-  describe('pop', () => {
+  describe('pop method', () => {
     it('removes last node from the list', () => {
       const singlyLinkedList = new SinglyLinkedList();
 
@@ -138,7 +148,7 @@ describe('SinglyLinkedList', () => {
     })
   });
 
-  describe('shift', () => {
+  describe('shift method', () => {
     it('removes first node from the list', () => {
       const singlyLinkedList = new SinglyLinkedList();
 
@@ -200,7 +210,15 @@ describe('SinglyLinkedList', () => {
     })
   });
 
-  describe('unshift', () => {
+  describe('unshift method', () => {
+    it('returns new linked list', () => {
+      const singlyLinkedList = new SinglyLinkedList();
+
+      const result = singlyLinkedList.unshift('12');
+
+      expect(result).toEqual(singlyLinkedList);
+    });
+
     describe('when the list is empty', () => {
       it('head and tail points to the same node', () => {
         const singlyLinkedList = new SinglyLinkedList();
@@ -233,6 +251,137 @@ describe('SinglyLinkedList', () => {
         expect(head.getNext()).toEqual(tail);
         expect(tail.getNext()).toBe(null);
         expect(singlyLinkedList.getLength()).toEqual(2);
+      });
+    });
+  });
+
+  describe('findAt method', () => {
+    describe('when the list is empty', () => {
+      it('returns null', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        const node = singlyLinkedList.findAt(2);
+
+        expect(node).toEqual(null);
+      })
+    });
+
+    describe('when the index is negative', () => {
+      it('returns null', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        singlyLinkedList.push(new SinglyLinkedListNode('10'));
+
+        const node = singlyLinkedList.findAt(-1);
+
+        expect(node).toEqual(null);
+      })
+    });
+
+    describe('when the index is higher than list length or equal list length', () => {
+      it('returns null', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        const nodes = [
+          new SinglyLinkedListNode('10'),
+          new SinglyLinkedListNode('12'),
+          new SinglyLinkedListNode('15'),
+        ];
+
+        nodes.forEach((node) => singlyLinkedList.push(node));
+
+        const node = singlyLinkedList.findAt(3);
+
+        expect(node).toEqual(null);
+      });
+    });
+
+    describe('when the index is valid and the list is not empty', () => {
+      it('returns correct node', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        const nodes = [
+          new SinglyLinkedListNode('10'),
+          new SinglyLinkedListNode('12'),
+          new SinglyLinkedListNode('15'),
+        ];
+
+        nodes.forEach((node) => singlyLinkedList.push(node));
+
+        const node = singlyLinkedList.findAt(1);
+
+        expect(node).toEqual(nodes[1]);
+      });
+    });
+  });
+
+  describe('setAt method', () => {
+    describe('when the list is empty', () => {
+      it('returns false', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        const result = singlyLinkedList.setAt(0, 2);
+
+        expect(result).toEqual(false);
+        expect(singlyLinkedList.getLength()).toBe(0);
+      });
+    });
+
+    describe('when the index is negative', () => {
+      it('returns false', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        const result = singlyLinkedList.setAt(0, -1);
+
+        expect(result).toEqual(false);
+        expect(singlyLinkedList.getLength()).toBe(0);
+      });
+    });
+
+    describe('when the index is valid and the list is not empty', () => {
+      it('returns correct node', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        const nodes = [
+          new SinglyLinkedListNode('10'),
+          new SinglyLinkedListNode('12'),
+          new SinglyLinkedListNode('15'),
+        ];
+
+        nodes.forEach((node) => singlyLinkedList.push(node));
+
+        singlyLinkedList.setAt(1, '5');
+
+        expect(singlyLinkedList.findAt(1)).toEqual(new SinglyLinkedListNode('5', nodes[2]));
+        expect(singlyLinkedList.getLength()).toBe(3);
+      });
+    });
+  });
+
+  describe('find method', () => {
+    describe('if the searching node is in the list', () => {
+      it('returns searching node', () => {
+        const singlyLinkedList = new SinglyLinkedList();
+
+        const nodes = [
+          new SinglyLinkedListNode('10'),
+          new SinglyLinkedListNode('12'),
+          new SinglyLinkedListNode('15'),
+        ];
+
+        nodes.forEach((node) => singlyLinkedList.push(node));
+
+        let foundNode = singlyLinkedList.find((node) => {
+          return node === nodes[1]; 
+        });
+
+        expect(foundNode).toEqual(nodes[1]);
+
+        foundNode = singlyLinkedList.find((_, index) => {
+          return index === 2;
+        });
+
+        expect(foundNode).toEqual(nodes[2]);
       });
     });
   });

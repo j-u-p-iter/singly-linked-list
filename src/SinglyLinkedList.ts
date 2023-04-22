@@ -1,9 +1,19 @@
 import { SinglyLinkedListNode } from './SinglyLinkedListNode';
 
+type Callback<Result = void> = (current: SinglyLinkedListNode | null, index: number) => Result;
+
 export class SinglyLinkedList {
   private length = 0;
   private head = null;
   private tail = null;
+
+  private isIndexInvalid(index: number) {
+    if (typeof index !== 'number' || index < 0 || index >= this.length) {
+      return true;
+    } 
+
+    return false;
+  }
 
   private valueToNode(value: any) {
     let newNode;
@@ -20,7 +30,8 @@ export class SinglyLinkedList {
   constructor() {}
 
   /**
-   * Add node to the end of the list
+   * Add node to the end of 
+   *   the list.
    *
    */
   public push(value: any) {
@@ -58,9 +69,9 @@ export class SinglyLinkedList {
    *   till the very end.
    *
    */
-  public forEach(callback: (current: SinglyLinkedListNode | null, index: number) => void) {
+  public forEach(callback: Callback) {
     if (typeof callback !== 'function') {
-      throw new Error('.forEach(callback) method expects callback.')
+      throw new Error('.forEach(callback) method expects a callback.')
     }
 
     let current = this.head;
@@ -147,8 +158,70 @@ export class SinglyLinkedList {
 
     this.length++;
 
-    return newNode;
+    return this;
   };
+
+  /**
+   * Finds the node by the index.
+   *
+   */
+  public findAt(nodeIndex: number): SinglyLinkedListNode | null {
+    if (this.isIndexInvalid(nodeIndex)) {
+      return null;
+    }
+
+    const foundNode = this.find((_, index) => index === nodeIndex);
+
+    return foundNode;
+  };
+
+  /**
+   * Finds the node in the list according to the
+   *   condition, provided in the callback.
+   *
+   */
+  public find(callback: Callback<boolean>, startingNode: SinglyLinkedListNode = this.head) {
+    if (this.isEmpty()) { return null; }
+
+    if (typeof callback !== 'function') {
+      throw new Error('.find(callback) method expects a callback.')
+    }
+
+    if (!startingNode || !(startingNode instanceof SinglyLinkedListNode)) {
+      throw new Error('.find(callback) expects to start from a starting node.')
+    }
+
+    let current = startingNode;
+    let counter = 0;
+
+    while(current instanceof SinglyLinkedListNode) {
+      if (callback(current, counter)) {
+        return current;
+      }
+
+      current = current.getNext();
+      counter++;
+    }
+
+    return null;
+  }
+
+  /**
+   * Sets the new value for the node 
+   *   at some index.
+   *
+   */
+  public setAt(nodeIndex, value): boolean {
+    const node = this.findAt(nodeIndex);
+
+    if (!node) {
+      return false; 
+    }
+
+    node.setValue(value);
+
+    return true;
+  } 
 
   /**
    * Clears the list.

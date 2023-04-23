@@ -204,6 +204,10 @@ export class SinglyLinkedList {
     return null;
   }
 
+  /**
+   * Filters out the list.
+   *
+   */
   public filter(callback: Callback<boolean>): SinglyLinkedList {
     if (typeof callback !== 'function') {
       throw new Error('.filter(callback) method expects a callback.')
@@ -307,6 +311,32 @@ export class SinglyLinkedList {
     this.length = 0;
   }
 
+  public reverse() {
+    let previousNode = null;
+    let nextNode = null;
+    let currentNode = this.head;
+
+    while(currentNode instanceof SinglyLinkedListNode) {
+      if (previousNode === null) {
+        this.tail = currentNode;
+      }
+
+      nextNode = currentNode.getNext();
+
+      currentNode.setNext(previousNode);
+
+      previousNode = currentNode;
+
+      currentNode = nextNode;
+
+      if (currentNode === null) {
+        this.head = previousNode;
+      }
+    }
+
+    return this;
+  }
+
   public isEmpty() {
     return this.head === null;
   }
@@ -323,4 +353,13 @@ export class SinglyLinkedList {
     return this.tail;
   }
 
+  public toArray() {
+    const resultArray = [];
+
+    this.forEach((currentNode) => {
+      resultArray.push(currentNode);
+    });
+
+    return resultArray;
+  }
 };

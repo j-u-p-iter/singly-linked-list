@@ -617,4 +617,51 @@ describe('SinglyLinkedList', () => {
       });
     });
   });
+
+  describe('reverse method', () => {
+    it('reverves list nodes', () => {
+      const singlyLinkedList = new SinglyLinkedList();
+
+      const nodes = [
+        new SinglyLinkedListNode('10'),
+        new SinglyLinkedListNode('12'),
+        new SinglyLinkedListNode('15'),
+      ];
+
+      nodes.forEach((node) => singlyLinkedList.push(node));
+
+      const resultList = singlyLinkedList.reverse();
+
+      const head = resultList.getHead();
+      const tail = resultList.getTail();
+
+      expect(head.getValue()).toBe('15');
+      expect(tail.getValue()).toBe('10');
+      expect(head.getNext().getValue()).toBe('12');
+      expect(tail.getNext()).toBe(null);
+      expect(resultList.getLength()).toBe(3);
+    });
+  });
+
+  describe('toArray method', () => {
+    it('converts singly linked list to an array', () => {
+      const singlyLinkedList = new SinglyLinkedList();
+
+      const nodes = [
+        new SinglyLinkedListNode('10'),
+        new SinglyLinkedListNode('12'),
+        new SinglyLinkedListNode('15'),
+      ];
+
+      nodes.forEach((node) => singlyLinkedList.push(node));
+
+      const resultArray = singlyLinkedList.toArray();
+
+      expect(resultArray).toEqual([
+        new SinglyLinkedListNode('10', new SinglyLinkedListNode('12', new SinglyLinkedListNode('15', null))),
+        new SinglyLinkedListNode('12', new SinglyLinkedListNode('15', null)),
+        new SinglyLinkedListNode('15', null),
+      ])
+    });
+  });
 });

@@ -311,6 +311,10 @@ export class SinglyLinkedList {
     this.length = 0;
   }
 
+  /**
+   * Reverses singly linked list.
+   *
+   */
   public reverse() {
     let previousNode = null;
     let nextNode = null;
@@ -353,6 +357,11 @@ export class SinglyLinkedList {
     return this.tail;
   }
 
+  /**
+   * Represents singly linked list
+   *   as array of nodes.
+   *
+   */
   public toArray() {
     const resultArray = [];
 
@@ -361,5 +370,42 @@ export class SinglyLinkedList {
     });
 
     return resultArray;
+  }
+
+  /**
+   * Represents singly linked list 
+   *   as array of nodes values.
+   *
+   * Very convenient to use for 
+   *   debugging purposes.
+   *
+   */
+  public print() {
+    const resultArray = [];
+
+    this.forEach((currentNode) => {
+      resultArray.push(currentNode.getValue());
+    });
+
+    return resultArray;
+  }
+
+  /**
+   * Creates the singly linked list
+   *   from array of values.
+   *
+   */
+  static fromArray(array): SinglyLinkedList {
+    if (!Array.isArray(array)) {
+      throw new Error('fromArray(array) method expects an array');
+    }
+
+    const singlyLinkedList = new SinglyLinkedList();
+
+    array.forEach((value) => {
+      singlyLinkedList.push(value);
+    });
+
+    return singlyLinkedList;
   }
 };

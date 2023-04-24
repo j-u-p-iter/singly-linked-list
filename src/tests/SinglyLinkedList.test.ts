@@ -11,6 +11,22 @@ describe('SinglyLinkedList', () => {
     expect(singlyLinkedList.isEmpty()).toBe(true);
   });
 
+  describe('fromArray', () => {
+    it('creates singly linked list from array of values', () => {
+      const singlyLinkedList = SinglyLinkedList.fromArray(['10', '15', '20']);
+
+      const head = singlyLinkedList.getHead();
+      const tail = singlyLinkedList.getTail();
+
+      expect(head.getValue()).toBe('10');
+      expect(head.getNext().getValue()).toBe('15');
+      expect(tail.getValue()).toBe('20');
+      expect(head.getNext().getNext()).toEqual(tail);
+      expect(tail.getNext()).toBe(null);
+      expect(singlyLinkedList.getLength()).toEqual(3);
+    });
+  });
+
   describe('push method', () => {
     describe('when the list is empty', () => {
       it('head and tail points to the same node', () => {
@@ -60,74 +76,56 @@ describe('SinglyLinkedList', () => {
 
   describe('forEach method', () => {
     it('traverses list from the very beginning till the very end', () => {
-      const singlyLinkedList = new SinglyLinkedList();
-
-      const nodes = [
-        new SinglyLinkedListNode('10'),
-        new SinglyLinkedListNode('12'),
-        new SinglyLinkedListNode('15'),
-      ];
-
-      nodes.forEach((node) => singlyLinkedList.push(node));
+      const singlyLinkedList = SinglyLinkedList.fromArray(['10', '12', '15']);
 
       const callback = jest.fn(() => {});
       singlyLinkedList.forEach(callback)
 
       expect(callback).toHaveBeenCalledTimes(3);
 
-      expect((callback.mock.calls[0] as any)[0]).toEqual(nodes[0])
+      expect((callback.mock.calls[0] as any)[0]).toEqual(
+        new SinglyLinkedListNode(
+          '10', 
+          new SinglyLinkedListNode(
+            '12',
+            new SinglyLinkedListNode('15')
+          )
+        )
+      )
       expect((callback.mock.calls[0] as any)[1]).toEqual(0)
 
-      expect((callback.mock.calls[1] as any)[0]).toEqual(nodes[1])
+      expect((callback.mock.calls[1] as any)[0]).toEqual(new SinglyLinkedListNode('12', new SinglyLinkedListNode('15')))
       expect((callback.mock.calls[1] as any)[1]).toEqual(1)
 
-      expect((callback.mock.calls[2] as any)[0]).toEqual(nodes[2])
+      expect((callback.mock.calls[2] as any)[0]).toEqual(new SinglyLinkedListNode('15'))
       expect((callback.mock.calls[2] as any)[1]).toEqual(2)
     });
   });
 
   describe('pop method', () => {
     it('removes last node from the list', () => {
-      const singlyLinkedList = new SinglyLinkedList();
-
-      const nodes = [
-        new SinglyLinkedListNode('10'),
-        new SinglyLinkedListNode('12'),
-        new SinglyLinkedListNode('15'),
-      ];
-
-      nodes.forEach((node) => singlyLinkedList.push(node));
+      const singlyLinkedList = SinglyLinkedList.fromArray(['10', '12', '15']);
 
       expect(singlyLinkedList.getLength()).toBe(3);
-      expect(singlyLinkedList.getTail()).toEqual(nodes[2]);
+      expect(singlyLinkedList.getTail().getValue()).toEqual('15');
 
       singlyLinkedList.pop();
       
       expect(singlyLinkedList.getLength()).toBe(2);
-      expect(singlyLinkedList.getTail()).toEqual(nodes[1]);
+      expect(singlyLinkedList.getTail().getValue()).toEqual('12');
     });
 
     it('returns removed node', () => {
-      const singlyLinkedList = new SinglyLinkedList();
-
-      const nodes = [
-        new SinglyLinkedListNode('10'),
-        new SinglyLinkedListNode('12'),
-        new SinglyLinkedListNode('15'),
-      ];
-
-      nodes.forEach((node) => singlyLinkedList.push(node));
+      const singlyLinkedList = SinglyLinkedList.fromArray(['10', '12', '15']);
 
       const removedNode = singlyLinkedList.pop();
       
-      expect(removedNode).toEqual(nodes[2]);
+      expect(removedNode.getValue()).toEqual('15');
     });
 
     describe('when there is one node in the list', () => {
       it('clears the list', () => {
-        const singlyLinkedList = new SinglyLinkedList();
-
-        singlyLinkedList.push(new SinglyLinkedListNode('10'));
+        const singlyLinkedList = SinglyLinkedList.fromArray(['10']);
 
         const removedNode = singlyLinkedList.pop();
         
@@ -150,50 +148,32 @@ describe('SinglyLinkedList', () => {
 
   describe('shift method', () => {
     it('removes first node from the list', () => {
-      const singlyLinkedList = new SinglyLinkedList();
-
-      const nodes = [
-        new SinglyLinkedListNode('10'),
-        new SinglyLinkedListNode('12'),
-        new SinglyLinkedListNode('15'),
-      ];
-
-      nodes.forEach((node) => singlyLinkedList.push(node));
+      const singlyLinkedList = SinglyLinkedList.fromArray(['10', '12', '15']);
 
       expect(singlyLinkedList.getLength()).toBe(3);
-      expect(singlyLinkedList.getTail()).toEqual(nodes[2]);
+      expect(singlyLinkedList.getHead().getValue()).toEqual('10');
 
       singlyLinkedList.shift();
       
       expect(singlyLinkedList.getLength()).toBe(2);
-      expect(singlyLinkedList.getHead()).toEqual(nodes[1]);
+      expect(singlyLinkedList.getHead().getValue()).toEqual('12');
     });
 
     it('returns the removed node', () => {
-      const singlyLinkedList = new SinglyLinkedList();
-
-      const nodes = [
-        new SinglyLinkedListNode('10'),
-        new SinglyLinkedListNode('12'),
-        new SinglyLinkedListNode('15'),
-      ];
-
-      nodes.forEach((node) => singlyLinkedList.push(node));
+      const singlyLinkedList = SinglyLinkedList.fromArray(['10', '12', '15']);
 
       const removedNode = singlyLinkedList.shift();
 
-      expect(removedNode).toEqual(nodes[0]);
+      expect(removedNode.getValue()).toEqual('10');
     });
 
     describe('when there is one node in the list', () => {
       it('clears the list', () => {
-        const singlyLinkedList = new SinglyLinkedList();
-
-        singlyLinkedList.push(new SinglyLinkedListNode('10'));
+        const singlyLinkedList = SinglyLinkedList.fromArray(['10']);
 
         const removedNode = singlyLinkedList.shift();
         
-        expect(removedNode).toEqual(new SinglyLinkedListNode('10'));
+        expect(removedNode.getValue()).toEqual('10');
         expect(singlyLinkedList.getHead()).toBe(null);
         expect(singlyLinkedList.getTail()).toBe(null);
         expect(singlyLinkedList.getLength()).toBe(0);
@@ -280,15 +260,7 @@ describe('SinglyLinkedList', () => {
 
     describe('when the index is higher than list length or equal list length', () => {
       it('returns null', () => {
-        const singlyLinkedList = new SinglyLinkedList();
-
-        const nodes = [
-          new SinglyLinkedListNode('10'),
-          new SinglyLinkedListNode('12'),
-          new SinglyLinkedListNode('15'),
-        ];
-
-        nodes.forEach((node) => singlyLinkedList.push(node));
+        const singlyLinkedList = SinglyLinkedList.fromArray(['10', '12', '15']);
 
         const node = singlyLinkedList.findAt(3);
 
@@ -298,19 +270,11 @@ describe('SinglyLinkedList', () => {
 
     describe('when the index is valid and the list is not empty', () => {
       it('returns correct node', () => {
-        const singlyLinkedList = new SinglyLinkedList();
-
-        const nodes = [
-          new SinglyLinkedListNode('10'),
-          new SinglyLinkedListNode('12'),
-          new SinglyLinkedListNode('15'),
-        ];
-
-        nodes.forEach((node) => singlyLinkedList.push(node));
+        const singlyLinkedList = SinglyLinkedList.fromArray(['10', '12', '15']);
 
         const node = singlyLinkedList.findAt(1);
 
-        expect(node).toEqual(nodes[1]);
+        expect(node.getValue()).toEqual('12');
       });
     });
   });
@@ -340,19 +304,11 @@ describe('SinglyLinkedList', () => {
 
     describe('when the index is valid and the list is not empty', () => {
       it('returns correct node', () => {
-        const singlyLinkedList = new SinglyLinkedList();
-
-        const nodes = [
-          new SinglyLinkedListNode('10'),
-          new SinglyLinkedListNode('12'),
-          new SinglyLinkedListNode('15'),
-        ];
-
-        nodes.forEach((node) => singlyLinkedList.push(node));
+        const singlyLinkedList = SinglyLinkedList.fromArray(['10', '12', '15']);
 
         singlyLinkedList.setAt(1, '5');
 
-        expect(singlyLinkedList.findAt(1)).toEqual(new SinglyLinkedListNode('5', nodes[2]));
+        expect(singlyLinkedList.findAt(1)).toEqual(new SinglyLinkedListNode('5', new SinglyLinkedListNode('15')));
         expect(singlyLinkedList.getLength()).toBe(3);
       });
     });
@@ -361,27 +317,19 @@ describe('SinglyLinkedList', () => {
   describe('find method', () => {
     describe('if the searching node is in the list', () => {
       it('returns searching node', () => {
-        const singlyLinkedList = new SinglyLinkedList();
-
-        const nodes = [
-          new SinglyLinkedListNode('10'),
-          new SinglyLinkedListNode('12'),
-          new SinglyLinkedListNode('15'),
-        ];
-
-        nodes.forEach((node) => singlyLinkedList.push(node));
+        const singlyLinkedList = SinglyLinkedList.fromArray(['10', '12', '15']);
 
         let foundNode = singlyLinkedList.find((node) => {
-          return node === nodes[1]; 
+          return node.getValue() === '12';
         });
 
-        expect(foundNode).toEqual(nodes[1]);
+        expect(foundNode.getValue()).toEqual('12');
 
         foundNode = singlyLinkedList.find((_, index) => {
           return index === 2;
         });
 
-        expect(foundNode).toEqual(nodes[2]);
+        expect(foundNode).toEqual(new SinglyLinkedListNode('15'));
       });
     });
 
@@ -661,7 +609,25 @@ describe('SinglyLinkedList', () => {
         new SinglyLinkedListNode('10', new SinglyLinkedListNode('12', new SinglyLinkedListNode('15', null))),
         new SinglyLinkedListNode('12', new SinglyLinkedListNode('15', null)),
         new SinglyLinkedListNode('15', null),
-      ])
+      ]);
+    });
+  });
+
+  describe('print', () => {
+    it('represents singly linked list as array of nodes values', () => {
+      const singlyLinkedList = new SinglyLinkedList();
+
+      const nodes = [
+        new SinglyLinkedListNode('10'),
+        new SinglyLinkedListNode('12'),
+        new SinglyLinkedListNode('15'),
+      ];
+
+      nodes.forEach((node) => singlyLinkedList.push(node));
+
+      const printedResult = singlyLinkedList.print();
+
+      expect(printedResult).toEqual(['10', '12', '15']);
     });
   });
 });

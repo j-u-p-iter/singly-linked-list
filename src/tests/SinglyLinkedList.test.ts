@@ -295,10 +295,12 @@ describe('SinglyLinkedList', () => {
       it('returns false', () => {
         const singlyLinkedList = new SinglyLinkedList();
 
-        const result = singlyLinkedList.setAt(0, -1);
+        singlyLinkedList.push(new SinglyLinkedListNode('10'));
+
+        const result = singlyLinkedList.setAt(-1, '5');
 
         expect(result).toEqual(false);
-        expect(singlyLinkedList.getLength()).toBe(0);
+        expect(singlyLinkedList.getLength()).toBe(1);
       });
     });
 

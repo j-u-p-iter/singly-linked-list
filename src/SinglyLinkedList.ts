@@ -15,6 +15,10 @@ export class SinglyLinkedList {
     return false;
   }
 
+  /**
+   * Derives node from any value.
+   *
+   */
   private valueToNode(value: any) {
     let newNode;
 
@@ -41,7 +45,8 @@ export class SinglyLinkedList {
      * When there is only one node,
      *   the head and the tail refer 
      *   to the same node.
-     *   The next property for both nodes is null.
+     *   The next property for both nodes 
+     *   equals to null.
      */
     if (this.isEmpty()) {
       this.head = this.tail = newNode;
